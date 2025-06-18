@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Demo from './Demo';
 
 //import logo from './logo.png';
-const logo = require("./logo.png");
+//const logo = require("./logo.png");
 
 import "./App.css";
 
@@ -15,7 +15,6 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">React ECharts v3 Demo</h1>
         </header>
         <p className="App-intro">
