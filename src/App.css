@@ -1,0 +1,114 @@
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+  color: #fff;
+}
+
+.App-intro {
+  font-size: large;
+  text-align: center;
+}
+.chart-container {
+  margin-bottom: 40px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+h2 {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+
+/* Container that wraps toggle and charts */
+.chart-section {
+  width: 100%;
+  max-width: 960px; /* match your chart width if any */
+  margin: 0 auto; /* centers the section */
+  padding: 20px;
+}
+
+/* Toggle aligned to the right of the container */
+.theme-toggle {
+  display: flex;
+  align-self: flex-end; /* Important if used inside flex */
+  margin-left: auto;     
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  padding: 4px 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: fit-content;   /* Prevents full row usage */
+}
+
+/* Toggle switch styling */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider::before {
+  transform: translateX(22px);
+}
+
+.label-text {
+  font-size: 14px;
+  color: #333;
+  user-select: none;
+}
