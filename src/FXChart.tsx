@@ -75,18 +75,88 @@ const FXChart: React.FC = () => {
         right: 0,
         top: "middle",
       },
-        toolbox: {
-          feature: {
-            dataView: {
-              title: "Data View",
-              lang: ["Data View", "Close", "Refresh"],
+      toolbox: {
+        right: "5%",
+        feature: {
+          dataView: {
+            title: "Data View",
+            lang: ["Data View", "Close", "Refresh"],
+            optionToContent: function (opt: any) {
+              const axisData = opt.xAxis[0].data;
+              const series = opt.series;
+
+              let table =
+                '<table style="width:100%;text-align:center;border-collapse:collapse;" border="1"><thead><tr><th>Month</th>';
+              series.forEach((s: any) => {
+                table += `<th>${s.name}</th>`;
+              });
+              table += "</tr></thead><tbody>";
+
+              for (let i = 0; i < axisData.length; i++) {
+                table += `<tr><td>${axisData[i]}</td>`;
+                series.forEach((s: any) => {
+                  const val =
+                    s.data[i] != null ? s.data[i].toLocaleString() : "-";
+                  table += `<td>${val}</td>`;
+                });
+                table += "</tr>";
+              }
+
+              table += "</tbody></table>";
+              return table;
             },
-            saveAsImage: {
-              title: "Save as Image",
-              lang: ["Right click to save image"],
+          },
+          saveAsImage: {
+            title: "Save as Image",
+            lang: ["Right click to save image"],
+          },
+          myExportCSV: {
+            show: true,
+            title: "Export CSV",
+            icon: "path://M9,1L9,3L4,3L4,5L9,5L9,7L13,4L9,1ZM3,6L3,17L15,17L15,6L13,6L13,8L5,8L5,6L3,6Z", // download icon
+            onclick: function (e: any) {
+              const opt = e.getOption();
+              const axisData = opt.xAxis[0].data;
+              const series = opt.series;
+
+              // Build CSV header
+              let csv =
+                "Month," + series.map((s: any) => s.name).join(",") + "\n";
+
+              // Build CSV rows
+              for (let i = 0; i < axisData.length; i++) {
+                const row = [axisData[i]];
+                for (let j = 0; j < series.length; j++) {
+                  row.push(series[j].data[i] ?? "");
+                }
+                csv += row.join(",") + "\n";
+              }
+
+              // Build filename components
+              const title = opt.title?.[0] || {};
+              let clientName = title.text || "Client";
+              clientName = clientName.replace(/[ .]/g, "");
+              const subtitle = title.subtext || ""; // e.g., "USD - CAD"
+              const [fxCurrency, settlementCurrency] = subtitle.split(" - ");
+              const startMonth = axisData[0]?.replace(/\s+/g, "_") || "Start";
+              const endMonth =
+                axisData[axisData.length - 1]?.replace(/\s+/g, "_") || "End";
+
+              // Final formatted filename
+              const fileName = `${clientName}_${fxCurrency}-${settlementCurrency}_${startMonth}_to_${endMonth}.csv`;
+
+              // Trigger download
+              const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.setAttribute("href", url);
+              link.setAttribute("download", fileName);
+              link.click();
+              URL.revokeObjectURL(url);
             },
           },
         },
+      },
       grid: {
         left: "10%",
         right: "20%",
