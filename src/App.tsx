@@ -7,6 +7,7 @@ import Demo from './Demo';
 //const logo = require("./logo.png");
 
 import "./App.css";
+import FXChart from "./FXChart";
 
 //echarts.registerTheme('dark', require('echarts/theme/dark'));
 
@@ -20,7 +21,7 @@ class App extends React.Component {
         <p className="App-intro">
           Echart components using Typescript (<code>*.ts</code>)
         </p>
-        <Demo />
+        <FXChart />
       </div>
     );
   }

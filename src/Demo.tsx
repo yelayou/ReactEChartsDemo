@@ -9,12 +9,23 @@ type EChartsOption = echarts.EChartsOption;
 import "./App.css";
 
 //echarts.registerTheme('dark', require('echarts/theme/dark'));
+const colors = [
+  "#1D309E",
+  "#C1CCE6",
+  "#808082",
+  "#CED0D0",
+  "#429F6A",
+  "#000000",
+  "#D3582E",
+];
 
 const Demo: React.FC = () => {
   // ----- theme toggle -----
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleTheme = () => setIsDarkMode((prev) => !prev);
+
+//Fetch Data
 
   // ------- Drill down---------------
 
@@ -124,48 +135,108 @@ const Demo: React.FC = () => {
     };
   }, [isDarkMode]); //  watch the theme toggle
 
-
   // ------------- Bar chart ------------
 
   const barChartOption = {
+    color: colors,
     title: {
-      text: "Monthly Sales Data",
+      text: "ABC GOODS LTD.",
+      subtext: "USD - CAD",
     },
     tooltip: {
       trigger: "axis",
+      axisPointer: {
+        type: "cross",
+      },
     },
     legend: {
-      data: ["Sales", "Profit", "Target"],
+      data: [
+        "Guaranteed (remaining)",
+        "Leverage",
+        "Contingent",
+        "Contingent leverage",
+        "Target min amount",
+        "Target max amount",
+        "Forecast",
+      ],
+      orient: "vertical",
+      right: 5,
+      top: "middle",
+    },
+    grid: {
+        left: "10%",
+        right: "20%",
+        bottom: "10%",
+        containLabel: true,
     },
     xAxis: {
       type: "category",
-      data: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      data: [
+        "MAY-2025",
+        "JUN-2025",
+        "JUL-2025",
+        "AUG-2025",
+        "SEP-2025",
+        "OCT-2025",
+        "NOV-2025",
+        "DEC-2025",
+        "JAN-2025",
+        "FEB-2025",
+      ],
     },
     yAxis: {
       type: "value",
     },
     series: [
       {
-        name: "Sales",
+        name: "Guaranteed (remaining)",
+        stack: "Ad",
         type: "bar",
-        data: [120, 200, 150, 80, 70, 110],
+        data: [1050000, 1050000, 800000, 800000, 800000, 800000],
       },
       {
-        name: "Profit",
+        name: "Leverage",
+        stack: "Ad",
         type: "bar",
-        data: [60, 100, 75, 40, 35, 55],
+        data: [1050000, 1050000, 1050000, 1050000, 1050000, 1050000],
       },
       {
-        name: "Target",
+        name: "Contingent",
+        stack: "Ad",
+        type: "bar",
+        data: [400000, 600000, 500000, 200000, 500000, 600000],
+      },
+      {
+        name: "Contingent leverage",
+        stack: "Ad",
+        type: "bar",
+        data: [150000, 150000, 150000, 150000, 150000, 150000],
+      },
+      {
+        name: "Target min amount",
         type: "line",
-        data: [80, 150, 125, 60, 50, 80],
+        data: [0, 0, 0, 0, 0, 500000, 500000, 500000, 500000, 500000],
+      },
+      {
+        name: "Target max amount",
+        type: "line",
+        data: [
+          4000000, 3000000, 3000000, 2500000, 2500000, 2000000, 2000000,
+          1500000, 1500000, 500000,
+        ],
+      },
+      {
+        name: "Forecast",
+        type: "line",
+        data: [
+          4000000, 3000000, 3000000, 3000000, 3000000, 3000000, 3000000,
+          3000000, 3000000, 3000000,
+        ],
       },
     ],
   };
 
   // ------------- Line chart ------------
-
-  const colors = ["#5470C6", "#EE6666"];
 
   const lineChartOption = {
     color: colors,
@@ -301,60 +372,52 @@ const Demo: React.FC = () => {
   //-------------- Render ------------------
 
   return (
-      <div
-        className="chart-section"
-        style={{ minHeight: "100vh", padding: 20 }}
-      >
-        <div className="theme-toggle">
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={isDarkMode}
-              onChange={toggleTheme}
-            />
-            <span className="slider round"></span>
-          </label>
-          <span className="label-text">DARK MODE</span>
-        </div>
-
-        <div className="chart-container">
-          <h2>Bar Chart</h2>
-          <ReactECharts
-            option={barChartOption}
-            theme={isDarkMode ? "dark" : undefined} // theme
-            style={{ height: "400px", width: "100%" }}
-          />
-        </div>
-
-        <div className="chart-container">
-          <h2>Drilldown Chart</h2>
-          <ReactECharts
-            ref={chartRef}
-            option={DrilldownChart}
-            theme={isDarkMode ? "dark" : undefined}
-            style={{ height: "400px", width: "100%" }}
-          />
-        </div>
-
-        <div className="chart-container">
-          <h2>Line Chart</h2>
-          <ReactECharts
-            option={lineChartOption}
-            theme={isDarkMode ? "dark" : undefined} // theme
-            style={{ height: "400px", width: "100%" }}
-          />
-        </div>
-
-        <div className="chart-container">
-          <h2>Pie Chart</h2>
-          <ReactECharts
-            option={pieChartOption}
-            theme={isDarkMode ? "dark" : undefined} // theme
-            style={{ height: "400px", width: "100%" }}
-          />
-        </div>
+    <div className="chart-section" style={{ minHeight: "100vh", padding: 20 }}>
+      <div className="theme-toggle">
+        <label className="switch">
+          <input type="checkbox" checked={isDarkMode} onChange={toggleTheme} />
+          <span className="slider round"></span>
+        </label>
+        <span className="label-text">DARK MODE</span>
       </div>
-    
+
+      <div className="chart-container">
+        <h2>Position Summary</h2>
+        <ReactECharts
+          option={barChartOption}
+          theme={isDarkMode ? "dark" : undefined} // theme
+          style={{ height: "400px", width: "100%" }}
+        />
+      </div>
+
+      <div className="chart-container">
+        <h2>Drilldown Chart</h2>
+        <ReactECharts
+          ref={chartRef}
+          option={DrilldownChart}
+          theme={isDarkMode ? "dark" : undefined}
+          style={{ height: "400px", width: "100%" }}
+        />
+      </div>
+
+      <div className="chart-container">
+        <h2>Line Chart</h2>
+        <ReactECharts
+          option={lineChartOption}
+          theme={isDarkMode ? "dark" : undefined} // theme
+          style={{ height: "400px", width: "100%" }}
+        />
+      </div>
+
+      <div className="chart-container">
+        <h2>Pie Chart</h2>
+        <ReactECharts
+          option={pieChartOption}
+          theme={isDarkMode ? "dark" : undefined} // theme
+          style={{ height: "400px", width: "100%" }}
+        />
+      </div>
+    </div>
   );
 };
 
