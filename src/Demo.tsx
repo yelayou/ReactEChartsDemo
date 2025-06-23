@@ -1,10 +1,11 @@
 //import React from 'react';
 import React, { useState, useEffect } from "react";
 import ReactECharts from "echarts-for-react";
-import * as echarts from "echarts";
+import * as echarts from 'echarts';
+import type { EChartsOption } from 'echarts';
 import "echarts/theme/dark"; // No need to assign it
 
-type EChartsOption = echarts.EChartsOption;
+//type ECOption = echarts.EChartsOption;
 
 import "./App.css";
 
@@ -25,115 +26,6 @@ const Demo: React.FC = () => {
 
   const toggleTheme = () => setIsDarkMode((prev) => !prev);
 
-//Fetch Data
-
-  // ------- Drill down---------------
-
-  type DataItem = {
-    value: number;
-    groupId: string;
-  };
-
-  const DrilldownChart: echarts.EChartsOption = {
-    xAxis: {
-      data: ["Animals", "Fruits", "Cars"],
-    },
-    yAxis: {},
-    series: {
-      type: "bar",
-      id: "sales",
-      data: [
-        { value: 5, groupId: "animals" },
-        { value: 2, groupId: "fruits" },
-        { value: 4, groupId: "cars" },
-      ],
-      universalTransition: {
-        enabled: true,
-        divideShape: "clone",
-      },
-    },
-    animationDurationUpdate: 300,
-  };
-
-  const drilldownData = [
-    {
-      dataGroupId: "animals",
-      data: [
-        ["Cats", 4],
-        ["Dogs", 2],
-        ["Cows", 1],
-        ["Sheep", 2],
-        ["Pigs", 1],
-      ],
-    },
-    {
-      dataGroupId: "fruits",
-      data: [
-        ["Apples", 4],
-        ["Oranges", 2],
-      ],
-    },
-    {
-      dataGroupId: "cars",
-      data: [
-        ["Toyota", 4],
-        ["Opel", 2],
-        ["Volkswagen", 2],
-      ],
-    },
-  ];
-
-  const chartRef = React.useRef<any>(null);
-
-  useEffect(() => {
-    const instance = chartRef.current?.getEchartsInstance();
-    if (!instance) return;
-
-    instance.setOption(DrilldownChart);
-
-    const handleClick = (event: any) => {
-      const subData = drilldownData.find(
-        (data) => data.dataGroupId === event.data?.groupId
-      );
-      if (!subData) return;
-
-      instance.setOption({
-        xAxis: {
-          data: subData.data.map((item) => item[0]),
-        },
-        series: {
-          type: "bar",
-          id: "sales",
-          dataGroupId: subData.dataGroupId,
-          data: subData.data.map((item) => item[1]),
-          universalTransition: {
-            enabled: true,
-            divideShape: "clone",
-          },
-        },
-        graphic: [
-          {
-            type: "text",
-            left: 50,
-            top: 20,
-            style: {
-              text: "Back",
-              fontSize: 18,
-            },
-            onclick: () => {
-              instance.setOption(DrilldownChart);
-            },
-          },
-        ],
-      });
-    };
-
-    instance.on("click", handleClick);
-
-    return () => {
-      instance.off("click", handleClick);
-    };
-  }, [isDarkMode]); //  watch the theme toggle
 
   // ------------- Bar chart ------------
 
@@ -386,16 +278,6 @@ const Demo: React.FC = () => {
         <ReactECharts
           option={barChartOption}
           theme={isDarkMode ? "dark" : undefined} // theme
-          style={{ height: "400px", width: "100%" }}
-        />
-      </div>
-
-      <div className="chart-container">
-        <h2>Drilldown Chart</h2>
-        <ReactECharts
-          ref={chartRef}
-          option={DrilldownChart}
-          theme={isDarkMode ? "dark" : undefined}
           style={{ height: "400px", width: "100%" }}
         />
       </div>
